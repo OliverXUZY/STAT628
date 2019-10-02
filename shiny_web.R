@@ -1,13 +1,25 @@
 library(shiny)
+
+# ui ----------------------------------------------------------------------
+
+
 ui <- fluidPage(
   titlePanel("Bodyfat Calculator"),
   
-  fluidRow(
-    column(3,
+  sidebarLayout(
+    # Input weight
+    sidebarPanel(
       numericInput(
         "num1",
-        h3("Put in your:"),
+        h3("Put in your weight:"),
         value = NULL
+      ),
+      
+      selectInput(
+        "unit1", 
+        "Units:",
+        list("lb" = "lb", 
+             "kg" = "kg")
       ),
       
       numericInput(
@@ -16,15 +28,36 @@ ui <- fluidPage(
         value = NULL
       ),
       
+      selectInput(
+        "unit2", 
+        "Units:",
+        list("m" = "m", 
+             "inch" = "inch")
+      ),
+      
       submitButton("Submit")
+    ),
+    mainPanel(
+      h2("Result:")
     )
-  ),
-  
-  mainPanel(
-    h2('Result:'),
-    h3(textOutput("Your body fat is:"))
   )
 )
 
-server <- function(input, output){}
+
+# Server ------------------------------------------------------------------
+
+
+server <- function(input, output){
+  l <- input$num1
+  w <- input$num2
+  unit1 <- input$unit1
+  unit2 <- input$unit2
+  
+  if (unit1 == "lb"){
+    
+  }else if(unit1 == "kg"){
+    
+  }
+}
+
 shinyApp(ui = ui, server = server)
