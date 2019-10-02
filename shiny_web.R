@@ -48,15 +48,14 @@ ui <- fluidPage(
 
 
 server <- function(input, output){
-  l <- input$num1
-  w <- input$num2
-  unit1 <- input$unit1
-  unit2 <- input$unit2
   
   if (unit1 == "lb"){
+    if (unit2 == "kg"){
+      output$bodyfat <- 1 * input$num1 + 1 * input$num2
+    }
     
   }else if(unit1 == "kg"){
-    
+    output$bodyfat <- 1 * input$num1 * 2.20462262 * 1
   }
 }
 
