@@ -39,6 +39,7 @@ ui <- fluidPage(
     ),
     mainPanel(
       h2("Result:")
+      
     )
   )
 )
