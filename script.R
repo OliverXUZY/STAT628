@@ -22,7 +22,7 @@ rm(list = ls())
 
 data = read.csv('BodyFat.csv')
 data$IDNO = NULL
-data$DENSITY = NULL
+#data$DENSITY = NULL
 
 #   ADIPOSITY = weight,height
 
@@ -80,7 +80,7 @@ summary(data)
 
 library(ggplot2)
 ggplot(data,aes(x = BODYFAT)) + geom_histogram(stat = 'bin',bins = 40)
-ggplot(data,aes(x = AGE)) + geom_histogram(stat = 'bin',bins = 40)
+ggplot(data,aes(x = AGE)) + geom_histogram(stat = 'bin',bins = 252)
 ggplot(data,aes(x = HeHEIGHT)) + geom_histogram(stat = 'bin',bins = 40)
 ggplot(data,aes(x = NECK)) + geom_histogram(stat = 'bin',bins = 40)
 ggplot(data,aes(x = KNEE)) + geom_histogram(stat = 'bin',bins = 40)
@@ -96,7 +96,13 @@ a = data[data$HEIGHT == min(data$HEIGHT),c(3,5)]
 
 
 
+te = data[data$BODYFAT != 0,1:2]
+
+mlte = lm(BODYFAT ~ DENSITY, te)
+predict(mlte, newdata = data.frame(DENSITY = data[data$BODYFAT == 0,2]))
 
 
 
+data[data$BODYFAT == 0,2]
 
+te = data[c(2,3,4),]
