@@ -39,7 +39,7 @@ shinyServer(function(input, output){
   })
 
   output$bodyfat <- renderText({
-    paste(data(), "%")
+    paste(data())
   })
   
   output$tips <- renderText({
