@@ -8,7 +8,7 @@ library(MASS)
 
 ### sumamry the data
 
-data.original = read.csv("data/BodyFat.csv")
+data.original = read.csv("BodyFat.csv")
 head(data.original)
 dim(data.original)
 colnames(data.original)
@@ -351,3 +351,4 @@ diag.panel = panel.box, cex.labels = 2,font.labels = 2)
 #          axis.title.y = element_text(color="#993333", size=14, face="bold"))
 # 
 # ggarrange(srpf1, srpf2, srpf3, srpf4, ncol=2, nrow=2)
+mean(data$WEIGHT)
