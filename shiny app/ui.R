@@ -24,28 +24,28 @@ shinyUI(pageWithSidebar(
     
     helpText("Note: Please enter a correct measurement, 
              our App can only work efficiently for Abdomen 
-             ranges from 60cm to 130cm(23.62 inches ~ 51.181 inches)"),
+             ranges from 60cm to 130cm(23 inches ~ 51 inches)"),
     
     numericInput(
       "num2",
-      h3("Put in your Wrist circumference:"),
+      h3("Put in your Weight:"),
       value = NULL
     ),
     
     selectInput(
       "unit2", 
       "Units:",
-      list("cm" = "cm", 
-           "inch" = "inch")
+      list("lbs" = "lbs", 
+           "kg" = "kg")
     ),
     helpText("Note: Please enter a correct measurement, 
-             our App can only work efficiently for Abdomen 
-             ranges from 15cm to 22cm(5.9055 inches ~ 8.6614 inches)"),
+             our App can only work efficiently for weight
+             ranges from 88 lbs to 263 lbs (40kg ~ 120kg)"),
     
     radioButtons("radio", h3("Gender"),
                  choices = list("Male" = "Male", "Female" = "Female"),
                  selected = "Male"),
-  
+
     actionButton(inputId = "go", label = "Submit")
   ),
   
@@ -54,8 +54,6 @@ shinyUI(pageWithSidebar(
     h2("Result:"),
     textOutput("bodyfat"),
     textOutput("tips"),
-    img(src = 'badger.png', height = 500, width = 350),
-    br()
-
+    img(src = 'badger.png', height = 500, width = 350)
   )
 ))
