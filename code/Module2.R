@@ -59,12 +59,16 @@ pcolor = "cadetblue"
 color = rep(pcolor, 252)
 color[data[,1]==0 | data[,1]==max(data[,1])] = "red"
 sp1 = ggplot(data, aes(y=BODYFAT, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,1]==0 | data[,1]==max(data[,1]),1], 
+           x = which(data[,1]==0 | data[,1]==max(data[,1]))+20,  
+           label= which(data[,1]==0 | data[,1]==max(data[,1]))) + 
   ggtitle("BODYFAT") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
 
 color = rep(pcolor, 252)
 sp2 = ggplot(data, aes(y=AGE, x = index)) + geom_point(color = color) + 
+  ggtitle("BODYFAT") + xlab("") + ylab("") + 
   ggtitle("AGE") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -72,6 +76,10 @@ sp2 = ggplot(data, aes(y=AGE, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,3]==max(data[,3])] = "red"
 sp3 = ggplot(data, aes(y=WEIGHT, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,3]==max(data[,3]),3], 
+           x = which(data[,3]==max(data[,3]))+20,  
+           label= which(data[,3]==max(data[,3]))) + 
+  ggtitle("BODYFAT") + xlab("") + ylab("") + 
   ggtitle("WEIGHT") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -79,6 +87,9 @@ sp3 = ggplot(data, aes(y=WEIGHT, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,4]==min(data[,4])] = "red"
 sp4 = ggplot(data, aes(y=HEIGHT, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,4]==min(data[,4]),4], 
+           x = which(data[,4]==min(data[,4]))+20,  
+           label= which(data[,4]==min(data[,4]))) + 
   ggtitle("HEIGHT") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -86,6 +97,9 @@ sp4 = ggplot(data, aes(y=HEIGHT, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,5] > 35] = "red"
 sp5 = ggplot(data, aes(y=ADIPOSITY, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,5] > 35,5], 
+           x = which(data[,5] > 35)+20,  
+           label= which(data[,5] > 35)) + 
   ggtitle("ADIPOSITY") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -93,6 +107,9 @@ sp5 = ggplot(data, aes(y=ADIPOSITY, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,6]==max(data[,6])] = "red"
 sp6 = ggplot(data, aes(y=NECK, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,6]==max(data[,6]),6], 
+           x = which(data[,6]==max(data[,6]))+20,  
+           label= which(data[,6]==max(data[,6]))) + 
   ggtitle("NECK") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -100,6 +117,9 @@ sp6 = ggplot(data, aes(y=NECK, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,7]>125] = "red"
 sp7 = ggplot(data, aes(y=CHEST, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,7]>125,7], 
+           x = which(data[,7]>125)+20,  
+           label= which(data[,7]>125)) + 
   ggtitle("CHEST") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -107,6 +127,9 @@ sp7 = ggplot(data, aes(y=CHEST, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,8]==max(data[,8])] = "red"
 sp8 = ggplot(data, aes(y=ABDOMEN, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,8]==max(data[,8]),8], 
+           x = which(data[,8]==max(data[,8]))+20,  
+           label= which(data[,8]==max(data[,8]))) + 
   ggtitle("ABDOMEN") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -114,6 +137,9 @@ sp8 = ggplot(data, aes(y=ABDOMEN, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,9]>120] = "red"
 sp9 = ggplot(data, aes(y=HIP, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,9]>120,9], 
+           x = which(data[,9]>120)+20,  
+           label= which(data[,9]>120)) + 
   ggtitle("HIP") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -121,6 +147,9 @@ sp9 = ggplot(data, aes(y=HIP, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,10]==max(data[,10])] = "red"
 sp10 = ggplot(data, aes(y=THIGH, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,10]==max(data[,10]),10], 
+           x = which(data[,10]==max(data[,10]))+20,  
+           label= which(data[,10]==max(data[,10]))) + 
   ggtitle("THIGH") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -128,6 +157,9 @@ sp10 = ggplot(data, aes(y=THIGH, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,11]==max(data[,11])] = "red"
 sp11 = ggplot(data, aes(y=KNEE, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,11]==max(data[,11]),11], 
+           x = which(data[,11]==max(data[,11]))+20,  
+           label= which(data[,11]==max(data[,11]))) + 
   ggtitle("KNEE") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -135,6 +167,9 @@ sp11 = ggplot(data, aes(y=KNEE, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,12]>29] = "red"
 sp12 = ggplot(data, aes(y=ANKLE, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,12]>29,12], 
+           x = which(data[,12]>29)+20,  
+           label= which(data[,12]>29)) + 
   ggtitle("ANKLE") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -142,6 +177,9 @@ sp12 = ggplot(data, aes(y=ANKLE, x = index)) + geom_point(color = color) +
 color = rep(pcolor, 252)
 color[data[,13]==max(data[,13])] = "red"
 sp13 = ggplot(data, aes(y=BICEPS, x = index)) + geom_point(color = color) + 
+  annotate("text", y = data[data[,13]==max(data[,13]),13], 
+           x = which(data[,13]==max(data[,13]))+20,  
+           label= which(data[,13]==max(data[,13]))) + 
   ggtitle("BICEPS") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -157,6 +195,7 @@ sp15 = ggplot(data, aes(y=WRIST, x = index)) + geom_point(color = color) +
   ggtitle("WRIST") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
+
 ggarrange(sp1,sp2,sp3,sp4,sp5,sp6,sp7,sp8,sp9,sp10,sp11,sp12,sp13,sp14,sp15,ncol=5,nrow=3)
 
 ### modify height of NO.42
