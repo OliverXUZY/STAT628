@@ -12,13 +12,13 @@ shinyServer(function(input, output){
         if (input$num2 < 88 | input$num2 > 263){
           "Your input weight value is not proper, we cannot provide with a correct estimation of your body fat."
         }else{
-          input$num1 * 0.88675  + input$num2 * (-0.11844) - 41.91070
+          (input$num1 * 0.88675  + input$num2 * (-0.11844) - 41.91070) / 100
         }
       }else if (input$unit2 == "kg"){
         if (input$num2 < 40 | input$num2 > 120){
           paste("Your input weight value is not proper, we cannot provide with a correct estimation of your body fat.")
         }else{
-          input$num1 * 0.88675 + input$num2 * (-0.11844) / 0.4536 - 41.91070
+          (input$num1 * 0.88675 + input$num2 * (-0.11844) / 0.4536 - 41.91070) / 100
         }
       }
     }else if(input$num1 < 23 | input$num1 > 51){
@@ -27,19 +27,19 @@ shinyServer(function(input, output){
       if (input$num2 < 88 | input$num2 > 263){
         "Your input Wrist value is not proper, we cannot provide with a correct estimation of your body fat."
       }else{
-        input$num1 * 0.88675 / 0.4536 + input$num2 * (-0.11844) - 41.91070
+        (input$num1 * 0.88675 / 0.4536 + input$num2 * (-0.11844) - 41.91070)/100
       }
     }else if (input$unit2 == "inch"){
       if (input$num2 < 40 | input$num2 > 120){
         paste("Your input Wrist value is not proper, we cannot provide with a correct estimation of your body fat.")
       }else{
-        input$num1 * 0.88675 / 0.4536 + input$num2 * (-0.11844) / 0.4536 - 41.91070
+        (input$num1 * 0.88675 / 0.4536 + input$num2 * (-0.11844) / 0.4536 - 41.91070)/100
       }
     }
   })
 
   output$bodyfat <- renderText({
-    paste(data(), "%")
+    paste(data())
   })
   
   output$tips <- renderText({

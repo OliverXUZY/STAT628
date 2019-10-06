@@ -52,8 +52,25 @@ shinyUI(pageWithSidebar(
   # Show the caption and plot of the requested variable against mpg
   mainPanel(
     h2("Result:"),
-    textOutput("bodyfat"),
-    textOutput("tips"),
-    img(src = 'badger.png', height = 500, width = 350)
+    tags$style("#x1_current_week {font-size:20px; 
+       color:red; 
+       display:block; }"), 
+    tags$style("#x1_previous_week {font-size:15px; 
+       display:block; 
+       bottom: 12px; 
+       position:absolute; 
+       width: 100%; 
+       left:0px;}"), 
+    div(style="text-align:center; 
+     box-shadow: 10px 10px 5px #888888; 
+     width:200px; 
+     height:200px; 
+     padding-top:70px; 
+     position:relative;", 
+        textOutput("bodyfat"), 
+        textOutput("tips") 
+    ), 
+    br(),
+    img(src = 'badger.png', height = 400, width = 250)
   )
 ))
