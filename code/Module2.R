@@ -1,12 +1,27 @@
 ### initialize
 
-setwd("~/R/UW/STAT628 Module 2")
-library("ggplot2")
-library("ggpubr")
-library("car")
-library("MASS")
+if (!require("ggplot2")) {      # If loading package fails,
+  install.packages("ggplot2")   # download it from internet,
+  stopifnot(require("ggplot2")) # and insist that it load.
+}
+if (!require("ggpubr")) {
+  install.packages("ggpubr")
+  stopifnot(require("ggpubr"))
+}
+if (!require("car")) {
+  install.packages("car")
+  stopifnot(require("car"))
+}
+if (!require("MASS")) {
+  install.packages("MASS")
+  stopifnot(require("MASS"))
+}
+if (!require("leaps")) {
+  install.packages("leaps")
+  stopifnot(require("leaps"))
+}
 
-### sumamry the data
+### sumamrize the data
 
 data.original = read.csv("BodyFat.csv")
 head(data.original)
@@ -38,8 +53,6 @@ RMIndex = which(data[,1]==0 | data[,1]==max(data[,1]) |
 
 data[RMIndex,]
 pcolor = "cadetblue"
-color = rep(pcolor, 252)
-color[RMIndex] = "red"
 
 ### scatter plot matrix
 
@@ -266,7 +279,7 @@ biggest = formula(lm(BODYFAT~., data[-RMIndex,]))
 step(lm(BODYFAT~1, data = data[-RMIndex,]), direction = "both", scope = biggest)
 summary(lm(BODYFAT~ABDOMEN+WEIGHT+WRIST+BICEPS, data[-RMIndex,]))
 
-### Added by Zhuoyan
+### Pairwise Plot
 panel.hist_line = function(x,...)
 {
   usr = par("usr"); on.exit(par(usr))
@@ -289,7 +302,30 @@ panel_cor = function(x,y,digits = 2,prefix = "",cex.cor,...)
 pairs(data[,c(3,8,13,15)],upper.panel = panel.smooth,lower.panel = panel_cor,
       cex = 1.5,pch = 16,col = "dodgerblue3", bg = "navy blue",
       diag.panel = panel.hist_line, cex.labels = 2,font.labels = 2)
-###
+
+### R^2, Cp, etc
+my.regsub <- function(matrix,y,nbest,method,nvmax=8){
+  temp <- regsubsets(matrix,y,nbest=nbest,method=method,nvmax=nvmax)
+  temp.mat <- cbind(summary(temp)$which,
+                    summary(temp)$rsq,summary(temp)$rss,
+                    summary(temp)$adjr2,summary(temp)$cp,
+                    summary(temp)$bic)
+  dimnames(temp.mat)[[2]] <- c(dimnames(summary(temp)$which)[[2]],
+                               "rsq", "rss", "adjr2", "cp", "bic")
+  return(temp.mat)
+}
+
+N = 3
+sele = my.regsub(data[-RMIndex,c(3,8,13,15)],y=data[-RMIndex,1],nbest=N,nvmax = N,method="exhaustive")
+sele[order(sele[,which(colnames(sele) == 'rsq')],decreasing = TRUE),]
+
+lm.final = lm(BODYFAT~WEIGHT+ABDOMEN, data[-RMIndex,])
+summary(lm.final)
+
+### global pairs R^2, Cp, etc 
+
+sele = my.regsub(data[-RMIndex,2:15],y=data[-RMIndex,1],nbest=N,nvmax = N,method="exhaustive")
+sele[order(sele[,which(colnames(sele) == 'rsq')],decreasing = TRUE),]
 
 ### global optimum 2 variable pair
 
@@ -325,29 +361,6 @@ for(i in 2:13){
   }
 }
 results2[results2[,4]==max(results2[,4]),]
-
-lm.final = lm(BODYFAT~WEIGHT+ABDOMEN, data[-RMIndex,])
-summary(lm.final)
-
-### added by Zhuoyan
-#install.packages("leaps")
-library(leaps)
-source("myregsub.R")
-my.regsub <- function(matrix,y,nbest,method,nvmax=8){
-  temp <- regsubsets(matrix,y,nbest=nbest,method=method,nvmax=nvmax)
-  temp.mat <- cbind(summary(temp)$which,
-                    summary(temp)$rsq,summary(temp)$rss,
-                    summary(temp)$adjr2,summary(temp)$cp,
-                    summary(temp)$bic)
-  dimnames(temp.mat)[[2]] <- c(dimnames(summary(temp)$which)[[2]],
-                               "rsq", "rss", "adjr2", "cp", "bic")
-  return(temp.mat)
-}
-
-N = 3
-sele = my.regsub(data[,2:15],y=data[,1],nbest=N,nvmax = N,method="exhaustive")
-sele = sele[order(sele[,which(colnames(sele) == 'rsq')],decreasing = TRUE),]
-###
 
 # scatter plot
 df = data.frame(fit = lm.final$fitted.values, res = lm.final$residuals)
@@ -400,47 +413,46 @@ diag.panel = panel.box, cex.labels = 2,font.labels = 2)
 
 ### influential points diag
 
-# lm.stdres = stdres(lm.final)
-# df = data.frame(fit = lm.final$fitted.values, str = lm.stdres)
-# srpf1 = ggplot(df,aes(x = fit, y = str)) + geom_point(color = pcolor, cex = 2) + 
-#   ggtitle("Fitted Values v.s. Studentized Residuals") +
-#   xlab("Fitted Values") + ylab("Studentized residuals") + 
-#   theme( plot.title = element_text(color="#993333", size=16, face="bold",hjust = 0.5),
-#          axis.title.x = element_text(color="#993333", size=14, face="bold"),
-#          axis.title.y = element_text(color="#993333", size=14, face="bold"))
-# lm.hats=hatvalues(lm.final)
-# df = data.frame(x = 1:length(index), y = lm.hats)
-# h0 = 4/246 # Rule of thumb for judging outliers
-# srpf2 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() + 
-#   annotate("text", x=which(lm.hats>h0), y=lm.hats[lm.hats>h0] + 0.01,  label= index[which(lm.hats>h0)]) +
-#   annotate("text", x = 255, y = h0-0.007, label = expression(2*p/n)) + 
-#   geom_hline(yintercept=h0, linetype= "dashed", color = "navyblue", size=1) + 
-#   ggtitle("Leverage Value") + xlab("Index") + ylab("Leverage Value") + 
-#   theme( plot.title = element_text(color="#993333", size=16, face="bold",hjust = 0.5),
-#          axis.title.x = element_text(color="#993333", size=14, face="bold"),
-#          axis.title.y = element_text(color="#993333", size=14, face="bold"))
-# lm.dffits = dffits(lm.final)
-# df = data.frame(x = 1:length(index), y = lm.dffits)
-# d0 = 2*sqrt(2/246) # Rule of thumb for judging influential points
-# srpf3 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() + 
-#   annotate("text", x = which(abs(lm.dffits)>d0), y=lm.dffits[abs(lm.dffits)>d0],  label= index[which(abs(lm.dffits)>d0)]) +
-#   geom_hline(yintercept=c(-1*d0, 0, d0), linetype=c("dashed","solid","dashed"), 
-#              color = "navyblue", size=1) + 
-#   annotate("text", x = 255, y = d0-0.05, label = expression(2*sqrt(p/n))) +
-#   ggtitle("DFFITS") + xlab("Index") + ylab("DFFITS") + 
-#   theme( plot.title = element_text(color="#993333", size=16, face="bold",hjust = 0.5),
-#          axis.title.x = element_text(color="#993333", size=14, face="bold"),
-#          axis.title.y = element_text(color="#993333", size=14, face="bold"))
-# lm.cooksD=cooks.distance(lm.final)
-# df = data.frame(x = 1:length(index), y = lm.cooksD)
-# c0 = qf(0.5, 2, 244)
-# srpf4 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() + 
-#   geom_hline(yintercept=c0, linetype= "dashed", color = "navyblue", size=1) + 
-#   annotate("text", x = 255, y = c0-0.05, label = expression(F[paste("p,n-p", sep="")])) +
-#   ggtitle("Cook's Distance") + xlab("Index") + ylab("Cook's Distance") + 
-#   theme( plot.title = element_text(color="#993333", size=16, face="bold",hjust = 0.5),
-#          axis.title.x = element_text(color="#993333", size=14, face="bold"),
-#          axis.title.y = element_text(color="#993333", size=14, face="bold"))
-# 
-# ggarrange(srpf1, srpf2, srpf3, srpf4, ncol=2, nrow=2)
-mean(data$WEIGHT)
+lm.stdres = stdres(lm.final)
+df = data.frame(fit = lm.final$fitted.values, str = lm.stdres)
+srpf1 = ggplot(df,aes(x = fit, y = str)) + geom_point(color = pcolor, cex = 2) +
+  ggtitle("Fitted Values v.s. Studentized Residuals") +
+  xlab("Fitted Values") + ylab("Studentized residuals") +
+  theme( plot.title = element_text(color="#993333", size=16, face="bold",hjust = 0.5),
+         axis.title.x = element_text(color="#993333", size=14, face="bold"),
+         axis.title.y = element_text(color="#993333", size=14, face="bold"))
+lm.hats=hatvalues(lm.final)
+df = data.frame(x = 1:length(index), y = lm.hats)
+h0 = 4/247 # Rule of thumb for judging outliers
+srpf2 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
+  annotate("text", x=which(lm.hats>h0), y=lm.hats[lm.hats>h0] + 0.01,  label= index[which(lm.hats>h0)]) +
+  annotate("text", x = 255, y = h0-0.007, label = expression(2*p/n)) +
+  geom_hline(yintercept=h0, linetype= "dashed", color = "navyblue", size=1) +
+  ggtitle("Leverage Value") + xlab("Index") + ylab("Leverage Value") +
+  theme( plot.title = element_text(color="#993333", size=16, face="bold",hjust = 0.5),
+         axis.title.x = element_text(color="#993333", size=14, face="bold"),
+         axis.title.y = element_text(color="#993333", size=14, face="bold"))
+lm.dffits = dffits(lm.final)
+df = data.frame(x = 1:length(index), y = lm.dffits)
+d0 = 2*sqrt(2/247) # Rule of thumb for judging influential points
+srpf3 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
+  annotate("text", x = which(abs(lm.dffits)>d0), y=lm.dffits[abs(lm.dffits)>d0],  label= index[which(abs(lm.dffits)>d0)]) +
+  geom_hline(yintercept=c(-1*d0, 0, d0), linetype=c("dashed","solid","dashed"),
+             color = "navyblue", size=1) +
+  annotate("text", x = 255, y = d0-0.05, label = expression(2*sqrt(p/n))) +
+  ggtitle("DFFITS") + xlab("Index") + ylab("DFFITS") +
+  theme( plot.title = element_text(color="#993333", size=16, face="bold",hjust = 0.5),
+         axis.title.x = element_text(color="#993333", size=14, face="bold"),
+         axis.title.y = element_text(color="#993333", size=14, face="bold"))
+lm.cooksD=cooks.distance(lm.final)
+df = data.frame(x = 1:length(index), y = lm.cooksD)
+c0 = qf(0.5, 2, 245)
+srpf4 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
+  geom_hline(yintercept=c0, linetype= "dashed", color = "navyblue", size=1) +
+  annotate("text", x = 255, y = c0-0.05, label = expression(F[paste("p,n-p", sep="")])) +
+  ggtitle("Cook's Distance") + xlab("Index") + ylab("Cook's Distance") +
+  theme( plot.title = element_text(color="#993333", size=16, face="bold",hjust = 0.5),
+         axis.title.x = element_text(color="#993333", size=14, face="bold"),
+         axis.title.y = element_text(color="#993333", size=14, face="bold"))
+
+ggarrange(srpf1, srpf2, srpf3, srpf4, ncol=2, nrow=2)
