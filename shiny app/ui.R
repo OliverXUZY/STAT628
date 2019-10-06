@@ -42,6 +42,10 @@ shinyUI(pageWithSidebar(
              our App can only work efficiently for Abdomen 
              ranges from 15cm to 22cm(5.9055 inches ~ 8.6614 inches)"),
     
+    radioButtons("radio", h3("Gender"),
+                 choices = list("Male" = "Male", "Female" = "Female"),
+                 selected = "Male"),
+  
     actionButton(inputId = "go", label = "Submit")
   ),
   
@@ -49,14 +53,9 @@ shinyUI(pageWithSidebar(
   mainPanel(
     h2("Result:"),
     textOutput("bodyfat"),
-    br(),
-    br(),
-    br(),
-    br(),
-    br(),
-    br(),
-    br(),
-    br(),
-    img(src = "college2.png", height = 90, width = 200)
+    textOutput("tips"),
+    img(src = 'badger.png', height = 500, width = 350),
+    br()
+
   )
 ))
