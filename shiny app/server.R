@@ -8,30 +8,32 @@ shinyServer(function(input, output){
     if (input$unit1 == "cm"){
       if (input$num1 < 60 | input$num1 > 130){
         "Your input Abdomen value is not proper, we cannot provide with a correct estimation of your body fat."
-      }else if (input$unit2 == "cm"){
-        if (input$num2 < 15 | input$num2 > 22){
-          "Your input Wrist value is not proper, we cannot provide with a correct estimation of your body fat."
+      }else if (input$unit2 == "lbs"){
+        if (input$num2 < 88 | input$num2 > 263){
+          "Your input weight value is not proper, we cannot provide with a correct estimation of your body fat."
         }else{
-          input$num1 * 0.7245  + input$num2 * (-2.0134) - 11.3414
+          input$num1 * 0.88675  + input$num2 * (-0.11844) - 41.91070
         }
-      }else if (input$unit2 == "inch"){
-        if (input$num2 < 5.9055 | input$num2 > 8.6614){
-          paste("Your input Wrist value is not proper, we cannot provide with a correct estimation of your body fat.")
+      }else if (input$unit2 == "kg"){
+        if (input$num2 < 40 | input$num2 > 120){
+          paste("Your input weight value is not proper, we cannot provide with a correct estimation of your body fat.")
         }else{
-          input$num1 * 0.7245 + input$num2 * (-2.0134) / 0.3937 - 11.3414
+          input$num1 * 0.88675 + input$num2 * (-0.11844) / 0.4536 - 41.91070
         }
       }
+    }else if(input$num1 < 23 | input$num1 > 51){
+      "Your input Abdomen value is not proper, we cannot provide with a correct estimation of your body fat."
     }else if (input$unit2 == "cm"){
-      if (input$num2 < 15 | input$num2 > 22){
+      if (input$num2 < 88 | input$num2 > 263){
         "Your input Wrist value is not proper, we cannot provide with a correct estimation of your body fat."
       }else{
-        input$num1 * 0.7245 / 0.3937 + input$num2 * (-2.0134) - 11.3414
+        input$num1 * 0.88675 / 0.4536 + input$num2 * (-0.11844) - 41.91070
       }
     }else if (input$unit2 == "inch"){
-      if (input$num2 < 5.9055 | input$num2 > 8.6614){
+      if (input$num2 < 40 | input$num2 > 120){
         paste("Your input Wrist value is not proper, we cannot provide with a correct estimation of your body fat.")
       }else{
-        input$num1 * 0.7245 / 0.3937 + input$num2 * (-2.0134) / 0.3937 - 11.3414
+        input$num1 * 0.88675 / 0.4536 + input$num2 * (-0.11844) / 0.4536 - 41.91070
       }
     }
   })
