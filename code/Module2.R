@@ -455,4 +455,4 @@ srpf4 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
          axis.title.x = element_text(color="#993333", size=14, face="bold"),
          axis.title.y = element_text(color="#993333", size=14, face="bold"))
 
-ggarrange(srpf1, srpf2, srpf3, srpf4, ncol=2, nrow=2)
+ggarrange(srpf1, qp2, srpf2, srpf3, ncol=2, nrow=2)
