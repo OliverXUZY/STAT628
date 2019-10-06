@@ -261,7 +261,7 @@ srp4 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
          axis.title.x = element_text(color="#993333", size=14, face="bold"),
          axis.title.y = element_text(color="#993333", size=14, face="bold"))
 
-ggarrange(srp1, srp2, srp3, srp4, ncol=2, nrow=2)
+ggarrange(srp1, qp1, srp2, srp3, ncol=2, nrow=2)
 
 ### strong influential points
 
@@ -271,7 +271,7 @@ data[index[which(lm.hats>h0 & abs(lm.dffits)>d0)],]
 
 data.mod = data.original[-RMIndex,]
 data.mod[,c(-1,-3)] = data[-RMIndex,]
-write.csv(data.mod, file = "data/Modyfied_BodyFat.csv")
+write.csv(data.mod, file = "data/Modyfied_BodyFat.csv", row.names = FALSE)
 
 ### forward AIC selection
 
