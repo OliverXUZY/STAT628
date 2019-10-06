@@ -219,7 +219,7 @@ summary(lm.final)</code></pre>
 <p>For doctors and normal users, they still can use the formula get the prediction of the bodyfat. Moreover, they maybe do not need or care about the details behind the algorithm. So this formula is at least accurate and useful for the doctors and the public.</p>
 <p>Finally,let’s see an example.</p>
 <p>According to the 2014 National Physical Fitness Monitoring Bulletin published by General Administration of Sport of China, the average abdomen and weight of a 20-24 years old male adult is 79.5 (cm) and 67.2 (kg), which is 148.15 (lb).</p>
-<p>Suppose a male adult has the above abdomen and weight. Using the formula we get that his bodyfat percentage is predicted as 11.0%. The 95% confidence interval is [10.13,11.8], which means we are 95% sure that his bodyfat percentage falls inside this interval.</p>
+<p>Suppose a male adult has the above abdomen and weight. Using the formula we get that his bodyfat percentage is predicted as 11.0%. The 95% confidence interval is [10.13,11.78], which means we are 95% sure that his bodyfat percentage falls inside this interval.</p>
 <pre class="r"><code>predictData &lt;- data.frame(WEIGHT=148.15,ABDOMEN=79.5)
 linear.pred &lt;- predict(object = lm.final, newdata = predictData,  type = &quot;response&quot;,se = TRUE)
 lo.ci &lt;- linear.pred$fit + c(-1.96,1.96)*linear.pred$se.fit
