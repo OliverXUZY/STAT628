@@ -5,8 +5,8 @@ account: ylingbfcalculator
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1293059
-bundleId: 2474872
+bundleId: 2477337
 url: https://ylingbfcalculator.shinyapps.io/bodyfat_stat628_group7/
-when: 1570413396.71438
+when: 1570473230.33922
 asMultiple: FALSE
 asStatic: FALSE
