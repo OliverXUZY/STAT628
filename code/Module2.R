@@ -23,7 +23,7 @@ if (!require("leaps")) {
 
 ### sumamrize the data
 
-data.original = read.csv("BodyFat.csv")
+data.original = read.csv("data/BodyFat.csv")
 head(data.original)
 dim(data.original)
 colnames(data.original)
@@ -42,7 +42,7 @@ par(mfrow = c(1,1))
 
 ### remove outliers
 
-RMIndex = which(data[,1]==0 | data[,1]==max(data[,1]) | 
+RMIndex = which(data[,1]<2 | data[,1]==max(data[,1]) | 
                   data[,3]==max(data[,3]) | data[,4]==min(data[,4]) | 
                   data[,5] > 35 | 
                   data[,6]==max(data[,6]) | data[,7]>125 | 
@@ -52,16 +52,17 @@ RMIndex = which(data[,1]==0 | data[,1]==max(data[,1]) |
                   data[,13]==max(data[,13]))
 
 data[RMIndex,]
-pcolor = "cadetblue"
 
 ### scatter plot matrix
 
+pcolor = "cadetblue"
+
 color = rep(pcolor, 252)
-color[data[,1]==0 | data[,1]==max(data[,1])] = "red"
+color[data[,1]<2 | data[,1]==max(data[,1])] = "red"
 sp1 = ggplot(data, aes(y=BODYFAT, x = index)) + geom_point(color = color) + 
-  annotate("text", y = data[data[,1]==0 | data[,1]==max(data[,1]),1], 
-           x = which(data[,1]==0 | data[,1]==max(data[,1]))+20,  
-           label= which(data[,1]==0 | data[,1]==max(data[,1]))) + 
+  annotate("text", y = data[data[,1]<2 | data[,1]==max(data[,1]),1], 
+           x = which(data[,1]<2 | data[,1]==max(data[,1]))+20,  
+           label= which(data[,1]<2 | data[,1]==max(data[,1]))) + 
   ggtitle("BODYFAT") + xlab("") + ylab("") + 
   theme(plot.title = element_text(color="#993333", size=10, face="bold",hjust = 0.5), 
         axis.text = element_blank(), axis.ticks = element_blank())
@@ -204,7 +205,7 @@ c1 = 0.4535922921969
 c2 = 0.0254
 height42 = sqrt(data[42,3]*c1/data[42,5])/c2
 data[42, 4] = height42
-RMIndex = c(31, 39, 86, 182, 216)
+RMIndex = c(31, 39, 86, 172, 182, 216)
 index = 1:252
 index = index[-RMIndex]
 
@@ -245,8 +246,6 @@ qp1 = ggplot() +
         axis.title.x = element_text(color="#993333", size=14, face="bold"),
         axis.title.y = element_text(color="#993333", size=14, face="bold"))
 
-ggarrange(rp1, qp1, ncol=2, nrow=1)
-
 ### Studentized Residual
 
 lm.stdres = stdres(lm.naive)
@@ -262,7 +261,7 @@ srp1 = ggplot(df,aes(x = fit, y = str)) + geom_point(color = pcolor, cex = 2) +
 
 lm.hats=hatvalues(lm.naive)
 df = data.frame(x = 1:length(index), y = lm.hats)
-h0 = 28/247 # Rule of thumb for judging outliers
+h0 = 28/246 # Rule of thumb for judging outliers
 srp2 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() + 
   annotate("text", x=which(lm.hats>h0), y=lm.hats[lm.hats>h0] + 0.01,  label= index[which(lm.hats>h0)]) +
   annotate("text", x = 255, y = h0-0.007, label = expression(2*p/n)) + 
@@ -276,7 +275,7 @@ srp2 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
 
 lm.dffits = dffits(lm.naive)
 df = data.frame(x = 1:length(index), y = lm.dffits)
-d0 = 2*sqrt(14/247) # Rule of thumb for judging influential points
+d0 = 2*sqrt(14/246) # Rule of thumb for judging influential points
 srp3 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() + 
   annotate("text", x = which(abs(lm.dffits)>d0), y=lm.dffits[abs(lm.dffits)>d0],  label= index[which(abs(lm.dffits)>d0)]) +
   geom_hline(yintercept=c(-1*d0, 0, d0), linetype=c("dashed","solid","dashed"), 
@@ -291,7 +290,7 @@ srp3 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
 
 lm.cooksD=cooks.distance(lm.naive)
 df = data.frame(x = 1:length(index), y = lm.cooksD)
-c0 = qf(0.5, 14, 233)
+c0 = qf(0.5, 14, 232)
 srp4 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() + 
   geom_hline(yintercept=c0, linetype= "dashed", color = "navyblue", size=1) + 
   annotate("text", x = 255, y = c0-0.05, label = expression(F[paste("p,n-p", sep="")])) +
@@ -425,8 +424,6 @@ qp2 = ggplot() +
         axis.title.x = element_text(color="#993333", size=14, face="bold"),
         axis.title.y = element_text(color="#993333", size=14, face="bold"))
 
-ggarrange(rp2, qp2, ncol=2, nrow=1)
-
 # boxcox
 
 boxcox(lm.final)
@@ -462,7 +459,7 @@ srpf1 = ggplot(df,aes(x = fit, y = str)) + geom_point(color = pcolor, cex = 2) +
          axis.title.y = element_text(color="#993333", size=14, face="bold"))
 lm.hats=hatvalues(lm.final)
 df = data.frame(x = 1:length(index), y = lm.hats)
-h0 = 4/247 # Rule of thumb for judging outliers
+h0 = 4/246 # Rule of thumb for judging outliers
 srpf2 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
   annotate("text", x=which(lm.hats>h0), y=lm.hats[lm.hats>h0] + 0.01,  label= index[which(lm.hats>h0)]) +
   annotate("text", x = 255, y = h0-0.007, label = expression(2*p/n)) +
@@ -473,7 +470,7 @@ srpf2 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
          axis.title.y = element_text(color="#993333", size=14, face="bold"))
 lm.dffits = dffits(lm.final)
 df = data.frame(x = 1:length(index), y = lm.dffits)
-d0 = 2*sqrt(2/247) # Rule of thumb for judging influential points
+d0 = 2*sqrt(2/246) # Rule of thumb for judging influential points
 srpf3 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
   annotate("text", x = which(abs(lm.dffits)>d0), y=lm.dffits[abs(lm.dffits)>d0],  label= index[which(abs(lm.dffits)>d0)]) +
   geom_hline(yintercept=c(-1*d0, 0, d0), linetype=c("dashed","solid","dashed"),
@@ -485,7 +482,7 @@ srpf3 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
          axis.title.y = element_text(color="#993333", size=14, face="bold"))
 lm.cooksD=cooks.distance(lm.final)
 df = data.frame(x = 1:length(index), y = lm.cooksD)
-c0 = qf(0.5, 2, 245)
+c0 = qf(0.5, 2, 244)
 srpf4 = ggplot(df,aes(x=x,xend=x,y=0,yend=y,label = index)) + geom_segment() +
   geom_hline(yintercept=c0, linetype= "dashed", color = "navyblue", size=1) +
   annotate("text", x = 255, y = c0-0.05, label = expression(F[paste("p,n-p", sep="")])) +
