@@ -71,6 +71,13 @@ shinyUI(pageWithSidebar(
         textOutput("tips") 
     ), 
     br(),
-    img(src = 'badger.png', height = 300, width = 200)
+    img(src = 'badger.png', height = 300, width = 200),
+    br(),
+    
+    h3("Contact Info:"),
+    h5("Zhuoyan Xu (zxu444@wisc.edu)"),
+    h5("Zhao Li (zli872@wisc.edu)"),
+    h5("Yaobin Ling (yling23@wisc.edu)"),
+    h5("Yujie Zhang (zhang2329@wisc.edu)")
   )
 ))
