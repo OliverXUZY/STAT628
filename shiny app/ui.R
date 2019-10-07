@@ -53,7 +53,7 @@ shinyUI(pageWithSidebar(
   mainPanel(
     h2("Result:(%)"),
     tags$style("#bodyfat {font-size:22px; 
-       color:red; 
+       color:Tomato; 
        display:block; }"), 
     tags$style("#tips {font-size:15px; 
        display:block; 
@@ -62,7 +62,7 @@ shinyUI(pageWithSidebar(
        width: 100%; 
        left:0px;}"), 
     div(style="text-align:center; 
-     box-shadow: 10px 10px 5px #888888; 
+     box-shadow: 20px 20px 10px gray; 
      width:300px; 
      height:300px; 
      padding-top:70px; 
